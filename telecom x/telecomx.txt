@@ -1,0 +1,42 @@
+data=pd.read_csv(r"C:\Users\manoj\Desktop\ZIP files\archive (2)\telecom_churn.csv")
+data.fillna(method='ffill',inplace=True)
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.ensemble import  GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,roc_auc_score
+x=data.drop('Churn',axis=1)
+y=data.Churn
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+log_model=LogisticRegression()
+ran_model=RandomForestClassifier()
+gradient_model=GradientBoostingClassifier()
+sv_model=SVC()
+log_model.fit(x_train,y_train)
+ran_model.fit(x_train,y_train)
+sv_model.fit(x_train,y_train)
+log_model_predict=log_model.predict(x_test)
+ran_model_predict=ran_model.predict(x_test)
+grad=GradientBoostingClassifier()
+grad.fit(x_train,y_train)
+gradient_model_predict=grad.predict(x_test)
+sv_model_predict=sv_model.predict(x_test)
+logistic_accuracy=accuracy_score(y_test,log_model_predict)
+ran_model_accuracy=accuracy_score(y_test,ran_model_predict)
+sv_model_accuracy=accuracy_score(y_test,sv_model_predict)
+gradient_model_accuracy=accuracy_score(y_test,gradient_model_predict)
+logistic_roc_aoc_score=roc_auc_score(y_test,log_model_predict)
+random_roc_aoc_score=roc_auc_score(y_test,ran_model_predict)
+sv_model_roc_aoc_score=roc_auc_score(y_test,sv_model_predict)
+gradien_roc_aoc_score=roc_auc_score(y_test,gradient_model_predict)
+print('logistic_accuracy',logistic_accuracy)
+print('random_accuracy',ran_model_accuracy)
+print('svm_model_accuracy',sv_model_accuracy)
+print('gradient_model_accuracy',gradient_model_accuracy)
+print('logistic_roc_aoc_score',logistic_roc_aoc_score)
+print('random_roc_aoc_score',random_roc_aoc_score)
+print("sv_model_roc_aoc_score",sv_model_roc_aoc_score)
+print('gradien-roc_aoc_score',gradien_roc_aoc_score)
+
+

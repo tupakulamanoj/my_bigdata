@@ -1,0 +1,23 @@
+from sklearn.preprocessing import OneHotEncoder,StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import train_test_split
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+data=pd.read_csv(r"C:\Users\manoj\Desktop\big_data\credit loan\credit_risk_dataset.csv")
+data.dropna(inplace=True)
+x=data.drop('cb_person_default_on_file',axis=1)
+y=data.cb_person_default_on_file
+y=y.replace('Y',1)
+y=y.replace('N',0)
+num_features=x.select_dtypes(exclude=object).columns
+categorical_features=x.select_dtypes(include=object).columns
+num_tr=StandardScaler()
+cat_tr=OneHotEncoder()
+preprocess=ColumnTransformer([('StandardScaler',num_tr,num_features),
+                              ('OneHotEncoder',cat_tr,categorical_features),])
+x=preprocess.fit_transform(x)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+random_fore=RandomForestClassifier()
+random_fore.fit(x_train,y_train)
+y_pred=random_fore.predict(x_test)
+print("accuracy_score",accuracy_score(y_test,y_pred))
